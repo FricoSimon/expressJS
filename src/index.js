@@ -9,6 +9,13 @@ const { responseGet, responsePost, responseError } = require('./response');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const logging = (req, res, next) => {
+    console.log(`Request: ${req.method} ${req.originalUrl}`);
+    next();
+}
+
+app.use(logging);
+
 apiRouter.get('/user', (req, res) => {
     responseGet(200, 'Success!', 1, 1, {
         name: 'John Doe',
