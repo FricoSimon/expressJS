@@ -6,6 +6,9 @@ const port = process.env.PORT;
 const apiRouter = express.Router();
 const { responseGet, responsePost, responseError } = require('./response');
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 apiRouter.get('/user', (req, res) => {
     responseGet(200, 'Success!', 1, 1, {
         name: 'John Doe',
