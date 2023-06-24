@@ -20,7 +20,22 @@ const logging = (req, res, next) => {
 app.use(logging);
 
 apiRouter.get('/user', (req, res) => {
+    responseGet(200, 'Success!', 1, 1, [{
+        id: 1,
+        name: 'John Doe',
+        age: 20,
+    },
+    {
+        id: 2,
+        name: 'Jane Doe',
+        age: 22,
+    }
+    ], res);
+});
+
+apiRouter.get('/user/:id', (req, res) => {
     responseGet(200, 'Success!', 1, 1, {
+        id: 1,
         name: 'John Doe',
         age: 20,
     }, res);
@@ -28,6 +43,7 @@ apiRouter.get('/user', (req, res) => {
 
 apiRouter.post('/user', (req, res) => {
     responsePost(200, 'Success!', {
+        id: 1,
         name: 'John Doe',
         age: 20,
     }, res);
