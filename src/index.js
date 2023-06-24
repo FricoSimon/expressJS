@@ -6,14 +6,17 @@ const port = process.env.PORT;
 const apiRouter = express.Router();
 const { responseGet, responsePost, responseError } = require('./response');
 
+// use json and urlencoded middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// create simple logging middleware
 const logging = (req, res, next) => {
     console.log(`Request: ${req.method} ${req.originalUrl}`);
     next();
 }
 
+// use logging middleware
 app.use(logging);
 
 apiRouter.get('/user', (req, res) => {
