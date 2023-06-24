@@ -40,10 +40,4 @@ userRoutes.get('/*', (req, res) => {
     responseError(404, 'Not found!', 'Route not found!', res);
 });
 
-// error handler
-userRoutes.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(404).send('Error Occured!');
-})
-
 module.exports = userRoutes;
