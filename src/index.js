@@ -9,9 +9,14 @@ const apiRouter = express.Router();
 const userRoutes = require('../routes/user');
 const { responseGet, responsePost, responseError } = require('./response');
 
+const cookieParser = require('cookie-parser');
+
 // use json and urlencoded middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// use cookie parser middleware
+app.use(cookieParser());
 
 // create simple logging middleware
 const logging = (req, res, next) => {
@@ -22,15 +27,7 @@ const logging = (req, res, next) => {
 // use logging middleware
 app.use(logging);
 
-// error handler
-const errorHandler = (err, req, res, next) => {
-    console.error(err.stack);
-    res.status(404).send('Error Occured!');
-}
-
-// use error handler
-app.use(errorHandler);
-
+// user routes router
 app.use('/api/user', userRoutes);
 
 // if route not found
@@ -46,8 +43,17 @@ router.get('/*', (req, res) => {
     responseError(404, 'Not found!', 'Route not found!', res);
 });
 
-// router
+// default outer
 app.use('', router);
+
+// error handler
+const errorHandler = (err, req, res, next) => {
+    console.error(err.stack);
+    res.status(404).send('Error Occured!');
+}
+
+// use error handler
+app.use(errorHandler);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
