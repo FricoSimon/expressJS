@@ -20,8 +20,9 @@ app.use(express.urlencoded({ extended: true }));
 // use cookie parser middleware
 app.use(cookieParser());
 app.use(cookieSession({
-    name: 'session',
-    keys: 'asdasdasdasdad'
+    secret: 'asdasdasdasdad',
+    resave: false,
+    saveUninitialized: true,
 }));
 
 // create simple logging middleware
@@ -30,20 +31,22 @@ const logging = (req, res, next) => {
     next();
 }
 
-// use logging middleware
 app.use(logging);
 
-// user routes router
-app.use('/api/user', userRoutes);
-// auth routes router
 app.use('/api/auth', authRoutes);
+
+app.use((req, res, next) => {
+    if (req.session.username) next();
+    else responseError(401, 'Unauthorized!', 'You are not authorized!', res);
+})
+
+app.use('/api/user', userRoutes);
 
 // if route not found
 apiRouter.get('/*', (req, res) => {
     responseError(404, 'Not found!', 'Route not found!', res);
 });
 
-// api router
 app.use('/api', apiRouter);
 
 // if route not found
@@ -51,7 +54,6 @@ router.get('/*', (req, res) => {
     responseError(404, 'Not found!', 'Route not found!', res);
 });
 
-// default outer
 app.use('', router);
 
 // error handler
@@ -60,7 +62,6 @@ const errorHandler = (err, req, res, next) => {
     res.status(404).send('Error Occured!');
 }
 
-// use error handler
 app.use(errorHandler);
 
 app.listen(port, () => {
