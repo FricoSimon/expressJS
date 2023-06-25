@@ -7,9 +7,11 @@ const port = process.env.PORT;
 const router = express.Router();
 const apiRouter = express.Router();
 const userRoutes = require('../routes/user');
+const authRoutes = require('../routes/auth');
 const { responseGet, responsePost, responseError } = require('./response');
 
 const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 
 // use json and urlencoded middleware
 app.use(express.json());
@@ -17,6 +19,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // use cookie parser middleware
 app.use(cookieParser());
+app.use(cookieSession({
+    name: 'session',
+    keys: 'asdasdasdasdad'
+}));
 
 // create simple logging middleware
 const logging = (req, res, next) => {
@@ -29,6 +35,8 @@ app.use(logging);
 
 // user routes router
 app.use('/api/user', userRoutes);
+// auth routes router
+app.use('/api/auth', authRoutes);
 
 // if route not found
 apiRouter.get('/*', (req, res) => {
