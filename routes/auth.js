@@ -16,4 +16,9 @@ authRoutes.post('/login', (req, res) => {
     }
 });
 
+// if route not found
+authRoutes.get('/*', (req, res) => {
+    responseError(404, 'Not found!', 'Route not found!', res);
+});
+
 module.exports = authRoutes;
