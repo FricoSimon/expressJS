@@ -1,6 +1,7 @@
 const express = require('express');
 const authRoutes = express.Router();
 const { responseGet, responsePost, responseError } = require('../src/response');
+const { User } = require('../database/schema/user.js');
 
 authRoutes.post('/login', (req, res) => {
     const { username, password } = req.body;

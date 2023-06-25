@@ -13,6 +13,8 @@ const { responseGet, responsePost, responseError } = require('./response');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 
+require('../database/connect');
+
 // use json and urlencoded middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,6 +37,7 @@ app.use(logging);
 
 app.use('/api/auth', authRoutes);
 
+// use middleware to check if user is logged in or not
 app.use((req, res, next) => {
     if (req.session.username) next();
     else responseError(401, 'Unauthorized!', 'You are not authorized!', res);
