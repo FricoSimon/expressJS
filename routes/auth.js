@@ -1,7 +1,7 @@
 const express = require('express');
 const authRoutes = express.Router();
 const { responseGet, responsePost, responseError } = require('../src/response');
-const { User } = require('../database/schema/user.js');
+const User = require('../database/schema/user');
 
 authRoutes.post('/login', (req, res) => {
     const { username, password } = req.body;
@@ -14,6 +14,16 @@ authRoutes.post('/login', (req, res) => {
         }
     } else {
         responseError(400, 'Bad Request!', 'Username and password are required!', res);
+    }
+});
+authRoutes.post('/register', async (req, res) => {
+    const { username, password, email } = req.body;
+    const userDB = await User.findOne({ $or: [{ username }, { email }] });
+    if (userDB) {
+        responseError(400, 'Bad Request!', 'Username or email already exists!', res);
+    } else {
+        const newUser = await User.create({ username, password, email });
+        responsePost(200, 'Success!', newUser, res);
     }
 });
 
