@@ -1,6 +1,7 @@
 const express = require('express');
 const userRoutes = express.Router();
 const { responseGet, responsePost, responseError } = require('../src/response');
+const University = require('../database/schema/university');
 
 // get all users
 userRoutes.get('', (req, res) => {
@@ -40,6 +41,16 @@ userRoutes.post('', (req, res) => {
         name: 'John Doe',
         age: 20,
     }, res);
+});
+
+userRoutes.post('/register/university', async (req, res) => {
+    const { major, year } = req.body;
+    if (major && year) {
+        const newUniversity = await University.create({ major, year });
+        responsePost(200, 'Success!', newUniversity, res);
+    } else {
+        responseError(400, 'Bad Request!', 'Major and year are required!', res);
+    }
 });
 
 // if route not found
