@@ -26,6 +26,7 @@ app.use(cookieSession({
     secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: true,
+    domain: 'localhost',
 }));
 
 // create simple logging middleware
