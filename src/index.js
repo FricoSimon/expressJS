@@ -28,6 +28,7 @@ app.use(cookieSession({
     saveUninitialized: true,
     domain: 'localhost', // domain: 'localhost' for development
     path: '/api', // path: '/api' for development
+    secure: false, // secure: false for development
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
