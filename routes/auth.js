@@ -6,20 +6,12 @@ const { hashPassword, comparePassword } = require('../utils/hash');
 
 authRoutes.post('/login', (req, res) => {
     const { username, password } = req.body;
-    if (username && password) {
-        if (req.session.username) {
-            responsePost(200, 'Successful!', { username, password }, res);
-        } else {
-            req.session.username = username;
-            responsePost(200, 'Success!', { username, password }, res);
-        }
-    } else {
-        responseError(400, 'Bad Request!', 'Username and password are required!', res);
-    }
+
 });
+
 authRoutes.post('/register', async (req, res) => {
     const { username, email } = req.body;
-    const userDB = await User.findOne({ $or: [{ username }, { email }] });
+    const userDB = await User.findOne({ email });
     if (userDB) {
         responseError(400, 'Bad Request!', 'Username or email already exists!', res);
     } else {
