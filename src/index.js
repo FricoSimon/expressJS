@@ -10,7 +10,6 @@ const userRoutes = require('../routes/user');
 const authRoutes = require('../routes/auth');
 const { responseGet, responsePost, responseError } = require('./response');
 
-const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 
 require('../database/connect');
@@ -19,8 +18,7 @@ require('../database/connect');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// use cookie parser middleware
-app.use(cookieParser());
+// use cookie session middleware
 app.use(cookieSession({
     secret: 'asdasdasdasdad',
     resave: false,
