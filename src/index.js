@@ -27,7 +27,8 @@ app.use(cookieSession({
     resave: false,
     saveUninitialized: true,
     domain: 'localhost', // domain: 'localhost' for development
-    path: '/api' // path: '/api' for development
+    path: '/api', // path: '/api' for development
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 
 // create simple logging middleware
