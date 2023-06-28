@@ -26,7 +26,8 @@ app.use(cookieSession({
     secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: true,
-    domain: 'localhost',
+    domain: 'localhost', // domain: 'localhost' for development
+    path: '/api' // path: '/api' for development
 }));
 
 // create simple logging middleware
