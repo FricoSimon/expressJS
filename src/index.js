@@ -3,6 +3,7 @@ const app = express();
 const dotenv = require('dotenv');
 dotenv.config();
 
+// routes
 const port = process.env.PORT;
 const router = express.Router();
 const apiRouter = express.Router();
@@ -11,6 +12,7 @@ const authRoutes = require('../routes/auth');
 const { responseGet, responsePost, responseError } = require('./response');
 
 const cookieSession = require('cookie-session');
+const passport = require('passport');
 
 require('../database/connect');
 
@@ -20,7 +22,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // use cookie session middleware
 app.use(cookieSession({
-    secret: 'asdasdasdasdad',
+    name: 'saved-Sessions',
+    secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: true,
 }));
@@ -33,6 +36,10 @@ const logging = (req, res, next) => {
 
 app.use(logging);
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+// check auth route first
 app.use('/api/auth', authRoutes);
 
 // use middleware to check if user is logged in or not
@@ -41,20 +48,19 @@ app.use((req, res, next) => {
     else responseError(401, 'Unauthorized!', 'You are not authorized!', res);
 })
 
+// user route after auth
 app.use('/api/user', userRoutes);
 
-// if route not found
+// if route not found for api/
 apiRouter.get('/*', (req, res) => {
     responseError(404, 'Not found!', 'Route not found!', res);
 });
-
 app.use('/api', apiRouter);
 
-// if route not found
+// if route not found for /
 router.get('/*', (req, res) => {
     responseError(404, 'Not found!', 'Route not found!', res);
 });
-
 app.use('', router);
 
 // error handler
