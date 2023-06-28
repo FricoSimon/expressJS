@@ -5,13 +5,6 @@ const University = require('../database/schema/university');
 
 // get all users
 userRoutes.get('', (req, res) => {
-    // set cookie
-    const name = req.query.name;
-    res.cookie('name', name, { maxAge: 10000, httpOnly: true });
-
-    // log cookies
-    console.log(req.cookies);
-
     responseGet(200, 'Success!', 1, 1, [{
         id: 1,
         name: 'John Doe',
