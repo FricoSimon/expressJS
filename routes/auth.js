@@ -15,6 +15,7 @@ authRoutes.post('/login', async (req, res) => {
         } else {
             const isMatch = await comparePassword(password, userDB.password);
             if (isMatch) {
+                req.session.user = userDB;
                 responsePost(200, 'Login Successful!', userDB, res);
             } else {
                 responseError(400, 'Bad Request!', 'Password is incorrect!', res);
