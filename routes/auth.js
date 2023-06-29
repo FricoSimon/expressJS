@@ -4,8 +4,15 @@ const { responseGet, responsePost, responseError } = require('../src/response');
 const User = require('../database/schema/user');
 const { hashPassword, comparePassword } = require('../utils/hash');
 
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+    windowMs: 1 * 60 * 1000, // 15 minutes
+    max: 2 // limit each IP to 5 requests
+})
+
 // login route
-authRoutes.post('/login', async (req, res) => {
+authRoutes.post('/login', limiter, async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) responseError(400, 'Bad Request!', 'Username or password is required!', res);
     if (email && password) {
@@ -25,7 +32,7 @@ authRoutes.post('/login', async (req, res) => {
 });
 
 // register route
-authRoutes.post('/register', async (req, res) => {
+authRoutes.post('/register', limiter, async (req, res) => {
     const email = req.body.email;
     const userDB = await User.findOne({ email });
     if (userDB) {
