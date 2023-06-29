@@ -5,11 +5,16 @@ const User = require('../database/schema/user');
 const { hashPassword, comparePassword } = require('../utils/hash');
 
 const rateLimit = require('express-rate-limit');
+const mongoSanitize = require('express-mongo-sanitize');
 
+// limit request
 const limiter = rateLimit({
     windowMs: 1 * 60 * 1000, // 15 minutes
     max: 2 // limit each IP to 5 requests
 })
+
+// sanitize request
+authRoutes.use(mongoSanitize());
 
 // login route
 authRoutes.post('/login', limiter, async (req, res) => {
