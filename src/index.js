@@ -49,7 +49,7 @@ app.use('/api/auth', authRoutes);
 
 // use middleware to check if user is logged in or not
 app.use((req, res, next) => {
-    if (req.session.username) next();
+    if (req.username) next();
     else responseError(401, 'Unauthorized!', 'You are not authorized!', res);
 })
 

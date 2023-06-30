@@ -10,9 +10,17 @@ passport.serializeUser((user, done) => {
     done(null, user.id);
 })
 
-passport.deserializeUser((id, done) => {
+passport.deserializeUser(async (id, done) => {
     console.log('deserialize user');
     console.log(id);
+    try {
+        const user = await User.findById(id)
+        if (!user) return done(null, false);
+        done(null, user);
+    } catch (err) {
+        console.log(err);
+        done(err);
+    }
 })
 
 passport.use(new Strategy({
