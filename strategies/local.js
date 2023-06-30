@@ -3,6 +3,18 @@ const { Strategy } = require('passport-local');
 const User = require('../database/schema/user');
 const { comparePassword } = require('../utils/hash');
 
+// use passport 0.5 because ver 6 had an error with cookie session
+// so be careful when using this since ver 0.5 had a lot of vulnerabilities
+passport.serializeUser((user, done) => {
+    console.log('serialize user');
+    done(null, user.id);
+})
+
+passport.deserializeUser((id, done) => {
+    console.log('deserialize user');
+    console.log(id);
+})
+
 passport.use(new Strategy({
     usernameField: 'email'
 },
