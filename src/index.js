@@ -15,6 +15,8 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 
 require('../database/connect');
+// require('../strategies/local');
+require('../strategies/discord');
 
 // use json and urlencoded middleware
 app.use(express.json());

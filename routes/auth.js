@@ -3,7 +3,9 @@ const authRoutes = express.Router();
 const { responseGet, responsePost, responseError } = require('../src/response');
 const User = require('../database/schema/user');
 const { hashPassword, comparePassword } = require('../utils/hash');
-require('../strategies/local')
+
+// require('../strategies/local')
+require('../strategies/discord')
 
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -54,6 +56,14 @@ authRoutes.post('/register', limiter, async (req, res) => {
         const newUser = await User.create({ email, password });
         responsePost(200, 'Success!', newUser, res);
     }
+});
+
+authRoutes.get('/discord', passport.authenticate('discord'), (req, res) => {
+    responsePost(200, 'Success!', 'ok', res);
+});
+
+authRoutes.get('/discord/redirect', passport.authenticate('discord'), (req, res) => {
+    responsePost(200, 'Success!', 'ok', res);
 });
 
 // if route not found
